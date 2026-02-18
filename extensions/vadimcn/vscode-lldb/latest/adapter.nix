@@ -4,6 +4,7 @@
   makeWrapper,
   rustPlatform,
   stdenv,
+  codelldb-launch,
 
   pname,
   src,
@@ -36,6 +37,7 @@ rustPlatform.buildRustPackage {
   LLDB_INCLUDE = "${lib.getDev lldb}/include";
 
   nativeBuildInputs = [ makeWrapper ];
+  buildInputs = [ codelldb-launch ];
 
   buildAndTestSubdir = "adapter";
 
@@ -54,6 +56,8 @@ rustPlatform.buildRustPackage {
     cp -t $out/share/lang_support lang_support/*.py
     ln -s ${lib.getLib lldb} $out/share/lldb
     makeWrapper $out/share/adapter/codelldb $out/bin/codelldb \
+      --set-default LLDB_DEBUGSERVER_PATH "${lldbServer}"
+    makeWrapper ${codelldb-launch}/bin/codelldb-launch $out/bin/codelldb-launch \
       --set-default LLDB_DEBUGSERVER_PATH "${lldbServer}"
   '';
 

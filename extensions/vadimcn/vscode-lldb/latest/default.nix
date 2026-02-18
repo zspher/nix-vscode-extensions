@@ -91,6 +91,7 @@ let
         version
         cargoHash
         stdenv
+        codelldb-launch
         ;
     }
   );
